@@ -103,7 +103,7 @@ class Dict(object):
             return s % mask
         for c in s:
             h = (a*h + ord(c)) % mask
-            a = a+b % mask - 1
+            a = a+b % (mask - 1)
         if h < 0:
             return h + mask
         else:

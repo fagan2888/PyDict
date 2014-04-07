@@ -24,7 +24,7 @@ else:
 import random, string
 from math import sqrt
 import time
-from coinor.blimpy import LinkedList
+from src.blimpy import LinkedList
 
 dummy = "<dummy key>"
 
@@ -97,7 +97,7 @@ class Dict(object):
             pass
         for c in s:
             h = (a*h + ord(c)) % self.size
-            a = a+b % self.size - 1
+            a = a+b % (self.size - 1)
         if h < 0:
             return h + self.size
         else:
