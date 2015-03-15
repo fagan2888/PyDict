@@ -9,9 +9,12 @@ installed (this provides a drop-in replacement for the Python list class
 based on linked lists).
 
 There is a method for visualizing the dictionary that requires pygame.
+
+Copyright 2014 Aykut Bulut, Ted Ralphs, and Lehigh University
 """
-__author__ = "Aykut Bulut and Ted Ralphs"
-__url__    = "https://github.com/tkralphs/PyDict"
+__author__  = "Aykut Bulut and Ted Ralphs"
+__url__     = "https://github.com/tkralphs/PyDict"
+__license__ = 'CC BY 3.0'
 
 try:
     import pygame

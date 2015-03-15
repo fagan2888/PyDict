@@ -10,8 +10,9 @@ Replace the method hash2 below for better performance.
 
 There is a method for visualizing the dictionary that requires pygame.
 """
-__author__ = "Aykut Bulut and Ted Ralphs"
-__url__    = "https://github.com/tkralphs/PyDict"
+__author__  = "Benjamin Peterson, Aykut Bulut and Ted Ralphs"
+__url__     = "https://github.com/tkralphs/PyDict"
+__license__ = "CC BY 3.0"
 
 try:
     import pygame
