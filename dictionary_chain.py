@@ -12,6 +12,12 @@ There is a method for visualizing the dictionary that requires pygame.
 
 Copyright 2014 Aykut Bulut, Ted Ralphs, and Lehigh University
 """
+from __future__ import division
+from __future__ import print_function
+from builtins import hex
+from builtins import range
+from past.utils import old_div
+from builtins import object
 __author__  = "Aykut Bulut and Ted Ralphs"
 __url__     = "https://github.com/tkralphs/PyDict"
 __license__ = 'CC BY 3.0'
@@ -27,7 +33,7 @@ else:
 import random, string
 from math import sqrt
 import time
-from src.blimpy import LinkedList
+from coinor.blimpy import LinkedList
 
 dummy = "<dummy key>"
 
@@ -38,8 +44,8 @@ def print_timing(func):
         t1 = time.clock()
         res = func(*arg, **kargs)
         t2 = time.clock()
-        times[func.func_name] = t2-t1
-        print '%s took %0.3fms' % (func.func_name, (t2-t1)*1000.0)
+        times[func.__name__] = t2-t1
+        print('%s took %0.3fms' % (func.__name__, (t2-t1)*1000.0))
         return res
     wrapper.func = func
     return wrapper
@@ -47,9 +53,9 @@ def print_timing(func):
 counts = {}
 
 def counter(func):
-    counts[func.func_name] = 0
+    counts[func.__name__] = 0
     def wrapper(*arg, **kargs):
-        counts[func.func_name] += 1
+        counts[func.__name__] += 1
         res = func(*arg, **kargs)
         return res
     return wrapper
@@ -59,7 +65,7 @@ def compare(i, j):
     return i == j
 
 def c_mul(a, b):
-    return eval(hex((long(a) * b) & 0xFFFFFFFFL)[:-1])
+    return eval(hex((int(a) * b) & 0xFFFFFFFF)[:-1])
 
 class Entry(object):
     """
@@ -337,7 +343,7 @@ class Dict(object):
         return self.used
 
     def __repr__(self):
-        r = ["{0!r} : {1!r}".format(k, v) for k, v in self.iteritems()]
+        r = ["{0!r} : {1!r}".format(k, v) for k, v in self.items()]
         return "Dict({" + ", ".join(r) + "})"
 
     def draw_init(self, dimension):
@@ -358,7 +364,7 @@ class Dict(object):
     def draw_dictionary(self):
 
         if not PYGAME_INSTALLED:
-            print "Please install Pygame for visualization...exiting"
+            print("Please install Pygame for visualization...exiting")
             return
 
         cell_dimension = 10
@@ -370,14 +376,14 @@ class Dict(object):
         i = j = 0
         for cell in self.table:
             shade = min(50*len(cell), 255)
-            print len(cell),
+            print(len(cell), end=' ')
             rectangle = (j*cell_dimension, i*cell_dimension,
                          cell_dimension, cell_dimension)
             pygame.draw.rect(self.bg, (shade, shade, shade), rectangle)
             if j == num_squares:
                 j = 0
                 i += 1
-                print
+                print()
             else:
                 j += 1
 
@@ -415,7 +421,7 @@ class DictIterator(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         # Check if the dictionary has been mutated under us.
         if self.used != self.d.used:
             # Make this state permanent.
@@ -447,7 +453,7 @@ class DictIterator(object):
             raise StopIteration
         self.len = self.len-1
 
-    __next__ = next
+    next = __next__
 
     def _extract(self, entry):
         return getattr(entry, self.kind)
@@ -472,15 +478,15 @@ def testing(dict_size = 2000, num_items = 1000):
     cd = Dict(dict_size)
     i = 0
     while i < num_items:
-        s = ''.join(random.choice(string.letters) for k in range(10))
+        s = ''.join(random.choice(string.ascii_letters) for k in range(10))
         cd[s] = random.randint(3,9)
         i += 1
-    ll1 = cd.keys()
+    ll1 = list(cd.keys())
     counts['compare'] = 0
     for i in range(len(ll1)):
         ll1[i] in cd
-    print 'Average number of comparisons: ', (1.0*counts['compare'])/len(ll1)
-    print 'Load factor: ', (1.0*len(ll1))/dict_size
+    print('Average number of comparisons: ', old_div((1.0*counts['compare']),len(ll1)))
+    print('Load factor: ', old_div((1.0*len(ll1)),dict_size))
 
 if __name__ == '__main__':
 
